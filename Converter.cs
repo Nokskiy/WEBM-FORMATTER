@@ -5,7 +5,7 @@ namespace WEBM_FORMATTER;
 
 public static class Converter
 {
-    public static int Convert(string path, int frameRate = 30)
+    public static int Convert(string path, int frameRate = 30, int bitRate = 500)
     {
         if (path == null || !File.Exists(path))
         {
@@ -22,7 +22,7 @@ public static class Converter
         {
             VideoCodec = "libvpx-vp9",
             VideoFrameRate = frameRate,
-            CustomOutputArgs = "-pix_fmt yuva420p -b:v 500k -crf 30 -quality good -cpu-used 4 -row-mt 1 -t 3",
+            CustomOutputArgs = $"-pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t 3",
         };
 
         try
