@@ -11,10 +11,12 @@ public static class Converter
         public const int bitRate = 500;
         public const string frameSize = "512x512";
         public const int time = 3;
+
+        public const bool audio = false;
     }
 
 
-    public static int Convert(string path, int frameRate = Standart.frameRate, int bitRate = Standart.bitRate, string frameSize = Standart.frameSize, int time = Standart.time)
+    public static int Convert(string path, int frameRate = Standart.frameRate, int bitRate = Standart.bitRate, string frameSize = Standart.frameSize, int time = Standart.time, bool audio = Standart.audio)
     {
         if (path == null || !File.Exists(path))
         {
@@ -26,12 +28,15 @@ public static class Converter
 
         string outputPath = Path.Combine(Path.GetDirectoryName(path)!, Path.GetFileNameWithoutExtension(path) + ".webm");
 
+        string audioFlag = audio ? "" : "-an";
+
         var outputOptions = new ConvertSettings
         {
             VideoCodec = "libvpx-vp9",
             VideoFrameRate = frameRate,
             VideoFrameSize = frameSize,
-            CustomOutputArgs = $"-pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t {time}",
+            AppendSilentAudioStream = false,
+            CustomOutputArgs = $"{audioFlag} -pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t {time}",
         };
 
         try

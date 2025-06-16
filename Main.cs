@@ -31,7 +31,11 @@ public static class Program
             string timeInput = Console.ReadLine()!;
             int time = int.TryParse(timeInput, out int timeRes) && timeRes > 0 ? timeRes : Converter.Standart.time;
 
-            Converter.Convert(input, frameRate, bitRate, frameSize, time);
+            Console.WriteLine("Audio true or false");
+            string audioInput = Console.ReadLine()!;
+            bool audio = audioInput == "true" ? true : false;
+
+            Converter.Convert(input, frameRate, bitRate, frameSize, time, audio);
         }
     }
 }
