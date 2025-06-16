@@ -1,4 +1,6 @@
-﻿namespace WEBM_FORMATTER;
+﻿using System.Text.RegularExpressions;
+
+namespace WEBM_FORMATTER;
 
 public static class Program
 {
@@ -10,22 +12,26 @@ public static class Program
             string input = Console.ReadLine()!.ToString();
 
             Console.WriteLine("Enter framerate");
-            string? framerateLine = Console.ReadLine();
+            string frameRateInput = Console.ReadLine()!;
+            int frameRate = int.TryParse(frameRateInput, out int frameRateRes) && frameRateRes > 0 ? frameRateRes : Converter.Standart.frameRate;
 
             Console.WriteLine("Enter bitrate");
-            string? bitrateLine = Console.ReadLine();
+            string bitRateInput = Console.ReadLine()!;
+            int bitRate = int.TryParse(bitRateInput, out int bitRateRes) && bitRateRes > 0 ? bitRateRes : Converter.Standart.frameRate;
 
-            int framerate = framerateLine != string.Empty ? int.Parse(framerateLine!) : 0;
-            int bitrate = bitrateLine != string.Empty ? int.Parse(bitrateLine!) : 0;
+            Console.WriteLine("Enter frame size like 512x512");
+            string frameSizeInput = Console.ReadLine()!;
+            bool isValidFormatForFrameSize(string input)
+            {
+                return Regex.IsMatch(input, @"^\d+x\d+$", RegexOptions.IgnoreCase);
+            }
+            string frameSize = isValidFormatForFrameSize(frameSizeInput) ? frameSizeInput : Converter.Standart.frameSize;
 
+            Console.WriteLine("Enter time");
+            string timeInput = Console.ReadLine()!;
+            int time = int.TryParse(timeInput, out int timeRes) && timeRes > 0 ? timeRes : Converter.Standart.time;
 
-            if (framerate >= 1)
-                if (bitrate != 0)
-                    Converter.Convert(input, framerate, bitrate);
-                else
-                    Converter.Convert(input, framerate);
-            else
-                Converter.Convert(input);
+            Converter.Convert(input, frameRate, bitRate, frameSize, time);
         }
     }
 }
