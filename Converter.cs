@@ -37,7 +37,8 @@ public static class Converter
             VideoFrameSize = frameSize,
             AppendSilentAudioStream = false,
             CustomOutputArgs = $"{audioFlag} -pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t {time} " +
-                  $"-vf \"scale={frameSize}:force_original_aspect_ratio=decrease,pad={frameSize}:(ow-iw)/2:(oh-ih)/2:color=black@0\""
+                 $"-vf \"scale=w='if(gte(a,{frameSize.Split('x')[0]}/{frameSize.Split('x')[1]}),{frameSize.Split('x')[0]},-1)':h='if(gte(a,{frameSize.Split('x')[0]}/{frameSize.Split('x')[1]}),-1,{frameSize.Split('x')[1]})'," +
+                 $"pad={frameSize.Split('x')[0]}:{frameSize.Split('x')[1]}:(ow-iw)/2:(oh-ih)/2:color=black@0\""
         };
 
         try
