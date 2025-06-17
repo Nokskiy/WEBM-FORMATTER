@@ -36,7 +36,8 @@ public static class Converter
             VideoFrameRate = frameRate,
             VideoFrameSize = frameSize,
             AppendSilentAudioStream = false,
-            CustomOutputArgs = $"{audioFlag} -pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t {time}",
+            CustomOutputArgs = $"{audioFlag} -pix_fmt yuva420p -b:v {bitRate}k -crf 30 -quality best -cpu-used 4 -row-mt 1 -t {time} " +
+                  $"-vf \"scale={frameSize}:force_original_aspect_ratio=decrease,pad={frameSize}:(ow-iw)/2:(oh-ih)/2:color=black@0\""
         };
 
         try
